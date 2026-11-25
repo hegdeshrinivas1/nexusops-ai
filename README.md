@@ -158,9 +158,3 @@ The project runs **100% locally out of the box** without external API keys. To e
    ```
 3. Apply the schema in [`data/oracle_23ai_schema.sql`](data/oracle_23ai_schema.sql) to create the `VECTOR(384, FLOAT32)` table and HNSW vector index.
 
----
-
-## License
-
-This project is open-source and available under the **MIT License** — you are free to use, modify, and distribute this software for personal or commercial purposes with attribution (`Copyright (c) 2026 hegdeshrinivas1`). Provided "as is", without warranty of any kind.
-
