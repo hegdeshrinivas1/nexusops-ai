@@ -1,0 +1,16 @@
+# ENTERPRISE COMPLIANCE & AUDIT REMEDIATION PLAYBOOK (SOP-AUD-08)
+# Operations & Governance Division
+
+1. OVERVIEW:
+This standard operating procedure defines the automated response workflow when an AI agent or auditor detects non-compliant sales transactions or margin violations.
+
+2. VIOLATION CLASSIFICATION & PROTOCOLS:
+- Category Alpha (High Risk): Transactions where discount exceeds 20.0% without executive authorization, or operating margin falls below 15.0%.
+  Action: Automatically create an Audit Incident Ticket in Jira/ServiceNow, notify Internal Audit, and freeze commission allocation until investigated.
+- Category Beta (Medium Risk): Discount between 15.1% and 20.0% missing VP sign-off documentation.
+  Action: Issue a formal 5-day documentation request to the regional sales director.
+- Category Gamma (Low Risk): Minor date or quota attribution discrepancies under $10,000.
+
+3. HUMAN-IN-THE-LOOP (HITL) ESCALATION GATE:
+Before executing any financial hold, automated notification to the Board Audit Committee, or updating enterprise records, the AI Agent MUST submit a structured remediation proposal and await Human Confirmation (Compliance Officer Approval).
+Autonomous ticket drafting is permitted; automated ticket dispatch requires explicit human confirmation.

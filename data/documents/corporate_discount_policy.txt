@@ -1,0 +1,20 @@
+# GLOBAL ENTERPRISE DISCOUNT & PRICING POLICY (DOC-POL-2024-04)
+# Effective Date: Q1 2024 | Classification: Confidential Internal
+
+1. PURPOSE & APPLICABILITY
+This policy sets the mandatory approval thresholds and commercial parameters for sales transactions across all geographic operating entities (North America, EMEA, APAC, LATAM).
+
+2. STANDARD AUTHORIZATION THRESHOLDS
+- Tier 1 (Field Sales Rep): Up to 8.0% standard discount.
+- Tier 2 (Regional Sales Director): 8.1% to 15.0% discount.
+- Tier 3 (VP of Commercial Operations): 15.1% to 20.0% discount with formal gross-margin justification.
+- Tier 4 (Executive Committee / CFO Approval): Any transaction exceeding 20.0% discount MUST have written prior authorization from the CFO or Executive Committee.
+
+3. HARD COMPLIANCE CEILING (CRITICAL)
+- Under NO circumstance may a standard enterprise software contract exceed 20.0% aggregate discount without an approved Exception Waiver (Form EW-99).
+- Any contract finalized with >= 20.0% discount lacking Form EW-99 is categorized as a Class 1 Financial Control Violation and triggers an automated internal audit and remediation review.
+- Target gross margin floor for Enterprise Cloud services is 65.0%. Transactions resulting in operating margins below 45.0% are strictly prohibited.
+
+4. END-OF-QUARTER PRICING ACCELERATORS
+- End-of-quarter volume incentives must be pre-registered 14 business days before quarter close.
+- Unregistered last-minute concessions to meet quota will not be recognized for commission compensation.

@@ -1,0 +1,27 @@
+# MEMORANDUM: Q3 2024 REGIONAL PERFORMANCE & MARGIN EROSION ANALYSIS
+# From: Elena Vance, Chief Financial Officer
+# To: Executive Leadership Team
+# Date: October 14, 2024
+
+EXECUTIVE SUMMARY:
+While overall group revenue in Q3 2024 reached $142.5M (+8.2% YoY), operating margin declined sharply to 18.4% compared to 24.1% in Q3 2023.
+
+REGIONAL FINDINGS:
+1. North America (NA):
+   - Revenue: $68.2M.
+   - Operating Margin: Collapsed from 28.5% to 14.2%.
+   - Primary Drivers: Heavy discounting in Tier-1 Strategic Accounts (notably in Cloud Infrastructure deals), aggressive pricing concessions granted in late September, and rising GPU cluster hosting costs.
+   - Several deals closed with discounts between 21% and 26%, far exceeding the 20% compliance threshold outlined in DOC-POL-2024-04.
+
+2. EMEA:
+   - Revenue: $44.1M.
+   - Operating Margin: Remained stable at 23.8%.
+   - Healthy pricing discipline maintained across German and UK operations.
+
+3. APAC & LATAM:
+   - APAC demonstrated strong 18% YoY growth driven by financial services customers in Singapore and Tokyo.
+   - LATAM delivered $9.7M with steady 21.0% margin.
+
+DIRECTIVES & REMEDIATION MANDATE:
+- All regional heads must conduct an immediate retrospective audit of any contract with discounts >= 20.0%.
+- Commercial teams must deploy automated AI guardrails to flag and prevent unauthorized non-compliant quotes during proposal generation.

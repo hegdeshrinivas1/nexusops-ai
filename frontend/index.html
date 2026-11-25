@@ -1,0 +1,2149 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="black">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NexusOps AI — Autonomous Enterprise Analyst</title>
+  <style>
+    /* =====================================================================
+       1. MONOCHROME DESIGN TOKENS (BLACK & WHITE)
+       Guaranteed high contrast on every surface, button, badge, and input.
+    ===================================================================== */
+    :root, [data-theme="black"] {
+      --bg-canvas: #09090B;
+      --bg-sidebar: #0F0F12;
+      --bg-surface: #141418;
+      --bg-elevated: #1B1B20;
+      --bg-hover: #27272A;
+      --bg-code: #0D0D10;
+      --border: #27272A;
+      --border-strong: #3F3F46;
+      --text-primary: #FAFAFA;
+      --text-secondary: #A1A1AA;
+      --text-muted: #71717A;
+      --btn-primary-bg: #FFFFFF;
+      --btn-primary-text: #09090B;
+      --btn-primary-hover: #E4E4E7;
+      --btn-secondary-bg: #1B1B20;
+      --btn-secondary-text: #FAFAFA;
+      --badge-solid-bg: #FFFFFF;
+      --badge-solid-text: #09090B;
+      --badge-subtle-bg: #27272A;
+      --badge-subtle-text: #FAFAFA;
+      --switch-track: #1B1B20;
+      --switch-thumb: #FFFFFF;
+      --switch-thumb-text: #09090B;
+      --chart-bar-hi: #FFFFFF;
+      --chart-bar-lo: #52525B;
+      --chart-grid: #27272A;
+      --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.5);
+      --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.45);
+    }
+
+    [data-theme="white"] {
+      --bg-canvas: #F8F9FA;
+      --bg-sidebar: #FFFFFF;
+      --bg-surface: #FFFFFF;
+      --bg-elevated: #F4F4F5;
+      --bg-hover: #E4E4E7;
+      --bg-code: #F4F4F5;
+      --border: #E4E4E7;
+      --border-strong: #D4D4D8;
+      --text-primary: #09090B;
+      --text-secondary: #52525B;
+      --text-muted: #71717A;
+      --btn-primary-bg: #09090B;
+      --btn-primary-text: #FFFFFF;
+      --btn-primary-hover: #27272A;
+      --btn-secondary-bg: #FFFFFF;
+      --btn-secondary-text: #09090B;
+      --badge-solid-bg: #09090B;
+      --badge-solid-text: #FFFFFF;
+      --badge-subtle-bg: #E4E4E7;
+      --badge-subtle-text: #09090B;
+      --switch-track: #E4E4E7;
+      --switch-thumb: #09090B;
+      --switch-thumb-text: #FFFFFF;
+      --chart-bar-hi: #09090B;
+      --chart-bar-lo: #A1A1AA;
+      --chart-grid: #E4E4E7;
+      --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.04);
+      --shadow-md: 0 4px 14px rgba(0, 0, 0, 0.06);
+    }
+
+    /* =====================================================================
+       2. BASE RESET & LAYOUT
+    ===================================================================== */
+    *, *::before, *::after {
+      box-sizing: border-box;
+    }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      background-color: var(--bg-canvas);
+      color: var(--text-primary);
+      font-family: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      font-size: 14px;
+      line-height: 1.55;
+      -webkit-font-smoothing: antialiased;
+      scroll-padding-top: 84px;
+    }
+
+    button {
+      scroll-margin-top: 84px;
+    }
+
+    button svg, button span {
+      pointer-events: none;
+    }
+
+    .app-shell {
+      display: flex;
+      min-height: 100vh;
+    }
+
+    /* =====================================================================
+       3. SIDEBAR NAVIGATION
+    ===================================================================== */
+    .sidebar {
+      width: 268px;
+      flex-shrink: 0;
+      background-color: var(--bg-sidebar);
+      border-right: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 20px 16px;
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow-y: auto;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 4px 6px 18px 6px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 18px;
+    }
+
+    .brand-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 9px;
+      background-color: var(--btn-primary-bg);
+      color: var(--btn-primary-text);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .brand-name {
+      font-size: 1.05rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: var(--text-primary);
+      line-height: 1.15;
+    }
+
+    .brand-sub {
+      font-size: 0.75rem;
+      color: var(--text-secondary);
+      margin-top: 2px;
+    }
+
+    .nav-label {
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-muted);
+      padding: 0 8px;
+      margin-bottom: 8px;
+    }
+
+    .nav-list {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .nav-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      padding: 10px 12px;
+      border-radius: 8px;
+      border: 1px solid transparent;
+      background: transparent;
+      color: var(--text-secondary);
+      font-family: inherit;
+      font-size: 0.9rem;
+      font-weight: 500;
+      cursor: pointer;
+      text-align: left;
+      transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+    }
+
+    .nav-item:hover {
+      background-color: var(--bg-elevated);
+      color: var(--text-primary);
+    }
+
+    .nav-item.active {
+      background-color: var(--btn-primary-bg);
+      color: var(--btn-primary-text);
+      font-weight: 600;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .nav-item-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .nav-count {
+      font-size: 0.72rem;
+      font-weight: 700;
+      padding: 2px 7px;
+      border-radius: 999px;
+      background-color: var(--badge-subtle-bg);
+      color: var(--badge-subtle-text);
+    }
+
+    .nav-item.active .nav-count {
+      background-color: var(--btn-primary-text);
+      color: var(--btn-primary-bg);
+    }
+
+    .status-box {
+      background-color: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 14px;
+      margin-top: 20px;
+    }
+
+    .status-title {
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-muted);
+      margin-bottom: 10px;
+    }
+
+    .status-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.82rem;
+      margin-bottom: 6px;
+    }
+
+    .status-row:last-child {
+      margin-bottom: 0;
+    }
+
+    .status-k {
+      color: var(--text-secondary);
+    }
+
+    .status-v {
+      color: var(--text-primary);
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background-color: var(--text-primary);
+      display: inline-block;
+    }
+
+    /* =====================================================================
+       4. MAIN AREA & TOP HEADER BAR (WITH PROFESSIONAL THEME SWITCH)
+    ===================================================================== */
+    .main-wrapper {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+    }
+
+    .topbar {
+      height: 60px;
+      background-color: var(--bg-sidebar);
+      border-bottom: 1px solid var(--border);
+      padding: 0 28px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 20;
+    }
+
+    .topbar-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .mobile-menu-btn {
+      display: none;
+      background: var(--bg-elevated);
+      border: 1px solid var(--border);
+      color: var(--text-primary);
+      border-radius: 6px;
+      padding: 6px 9px;
+      cursor: pointer;
+    }
+
+    .breadcrumb {
+      font-size: 0.88rem;
+      color: var(--text-secondary);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .breadcrumb strong {
+      color: var(--text-primary);
+      font-weight: 600;
+    }
+
+    .topbar-right {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    /* Professional Segmented UI Theme Switch */
+    .theme-switch {
+      display: inline-flex;
+      align-items: center;
+      background-color: var(--switch-track);
+      border: 1px solid var(--border-strong);
+      border-radius: 999px;
+      padding: 3px;
+      gap: 2px;
+    }
+
+    .theme-opt {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 5px 12px;
+      border-radius: 999px;
+      border: none;
+      background: transparent;
+      color: var(--text-secondary);
+      font-family: inherit;
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.18s ease;
+    }
+
+    .theme-opt:hover {
+      color: var(--text-primary);
+    }
+
+    .theme-opt.active {
+      background-color: var(--switch-thumb);
+      color: var(--switch-thumb-text);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .btn-ghost-sm {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 12px;
+      border-radius: 8px;
+      border: 1px solid var(--border-strong);
+      background-color: var(--bg-surface);
+      color: var(--text-primary);
+      font-family: inherit;
+      font-size: 0.82rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background-color 0.15s ease;
+    }
+
+    .btn-ghost-sm:hover {
+      background-color: var(--bg-hover);
+    }
+
+    /* =====================================================================
+       5. CONTENT CONTAINER & CARDS
+    ===================================================================== */
+    .content {
+      padding: 28px;
+      max-width: 1240px;
+      width: 100%;
+      margin: 0 auto;
+    }
+
+    .page-section {
+      display: none;
+    }
+
+    .page-section.active {
+      display: block;
+      animation: fadeIn 0.18s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .hero-card {
+      background-color: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 24px 28px;
+      margin-bottom: 20px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .hero-eyebrow {
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+    }
+
+    .hero-title {
+      font-size: 1.75rem;
+      font-weight: 700;
+      letter-spacing: -0.025em;
+      color: var(--text-primary);
+      margin: 0 0 8px 0;
+      line-height: 1.25;
+    }
+
+    .hero-desc {
+      font-size: 0.95rem;
+      color: var(--text-secondary);
+      margin: 0;
+      max-width: 820px;
+    }
+
+    /* 5-Stage Pipeline Stepper */
+    .pipeline-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .pipeline-step {
+      background-color: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 12px 14px;
+      transition: border-color 0.2s ease, transform 0.2s ease;
+    }
+
+    .pipeline-step.running {
+      border-color: var(--text-primary);
+      box-shadow: 0 0 0 1px var(--text-primary);
+    }
+
+    .pipeline-step.done {
+      border-color: var(--border-strong);
+    }
+
+    .pipeline-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 4px;
+    }
+
+    .pipeline-num {
+      font-size: 0.68rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-muted);
+    }
+
+    .pipeline-state {
+      font-size: 0.68rem;
+      font-weight: 700;
+      padding: 1px 6px;
+      border-radius: 999px;
+      background-color: var(--badge-subtle-bg);
+      color: var(--badge-subtle-text);
+    }
+
+    .pipeline-step.done .pipeline-state {
+      background-color: var(--badge-solid-bg);
+      color: var(--badge-solid-text);
+    }
+
+    .pipeline-name {
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+
+    .pipeline-sub {
+      font-size: 0.76rem;
+      color: var(--text-secondary);
+      margin-top: 2px;
+    }
+
+    /* Accordion / Quick Guide */
+    .accordion {
+      background-color: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      margin-bottom: 20px;
+      overflow: hidden;
+    }
+
+    .accordion-header {
+      width: 100%;
+      background: transparent;
+      border: none;
+      padding: 14px 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      color: var(--text-primary);
+      font-family: inherit;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      text-align: left;
+    }
+
+    .accordion-header:hover {
+      background-color: var(--bg-elevated);
+    }
+
+    .accordion-body {
+      padding: 0 18px 18px 18px;
+      border-top: 1px solid var(--border);
+      display: none;
+    }
+
+    .accordion.open .accordion-body {
+      display: block;
+    }
+
+    .guide-3col {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+      padding-top: 16px;
+    }
+
+    .guide-mini {
+      background-color: var(--bg-elevated);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 14px;
+    }
+
+    .guide-mini-title {
+      font-weight: 700;
+      font-size: 0.88rem;
+      color: var(--text-primary);
+      margin-bottom: 6px;
+    }
+
+    .guide-mini-text {
+      font-size: 0.82rem;
+      color: var(--text-secondary);
+      margin: 0;
+    }
+
+    /* Scenario Cards & Prompt Box */
+    .section-title {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin: 0 0 10px 0;
+    }
+
+    .scenario-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .scenario-card {
+      background-color: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 14px 16px;
+      text-align: left;
+      cursor: pointer;
+      font-family: inherit;
+      transition: all 0.15s ease;
+    }
+
+    .scenario-card:hover {
+      border-color: var(--text-primary);
+      background-color: var(--bg-elevated);
+    }
+
+    .scenario-tag {
+      display: inline-block;
+      font-size: 0.68rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      padding: 2px 7px;
+      border-radius: 4px;
+      background-color: var(--badge-subtle-bg);
+      color: var(--badge-subtle-text);
+      margin-bottom: 8px;
+    }
+
+    .scenario-title {
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 4px;
+    }
+
+    .scenario-desc {
+      font-size: 0.8rem;
+      color: var(--text-secondary);
+      line-height: 1.4;
+    }
+
+    .prompt-panel {
+      background-color: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 18px;
+      margin-bottom: 24px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .prompt-label {
+      display: block;
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+      margin-bottom: 8px;
+    }
+
+    .prompt-textarea {
+      width: 100%;
+      min-height: 82px;
+      padding: 12px 14px;
+      border-radius: 8px;
+      border: 1px solid var(--border-strong);
+      background-color: var(--bg-elevated);
+      color: var(--text-primary);
+      font-family: inherit;
+      font-size: 0.94rem;
+      line-height: 1.5;
+      resize: vertical;
+      outline: none;
+    }
+
+    .prompt-textarea:focus {
+      border-color: var(--text-primary);
+    }
+
+    .prompt-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 12px;
+      flex-wrap: wrap;
+    }
+
+    /* Buttons (100% Controlled Contrast) */
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 10px 18px;
+      border-radius: 8px;
+      border: 1px solid var(--btn-primary-bg);
+      background-color: var(--btn-primary-bg);
+      color: var(--btn-primary-text);
+      font-family: inherit;
+      font-size: 0.88rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background-color 0.15s ease, opacity 0.15s ease;
+    }
+
+    .btn-primary:hover:not(:disabled) {
+      background-color: var(--btn-primary-hover);
+    }
+
+    .btn-primary:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    .btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 10px 16px;
+      border-radius: 8px;
+      border: 1px solid var(--border-strong);
+      background-color: var(--btn-secondary-bg);
+      color: var(--btn-secondary-text);
+      font-family: inherit;
+      font-size: 0.88rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background-color 0.15s ease;
+    }
+
+    .btn-secondary:hover {
+      background-color: var(--bg-hover);
+    }
+
+    /* KPI Tiles */
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    .kpi-grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    .kpi-card {
+      background-color: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 16px 18px;
+    }
+
+    .kpi-label {
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-muted);
+    }
+
+    .kpi-value {
+      font-size: 1.55rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-top: 4px;
+    }
+
+    /* Result Tabs */
+    .tabs-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 20px;
+    }
+
+    .tab-btn {
+      padding: 9px 13px;
+      background: transparent;
+      border: none;
+      border-bottom: 2px solid transparent;
+      color: var(--text-secondary);
+      font-family: inherit;
+      font-size: 0.86rem;
+      font-weight: 600;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: color 0.15s ease, border-color 0.15s ease;
+    }
+
+    .tab-btn:hover {
+      color: var(--text-primary);
+    }
+
+    .tab-btn.active {
+      color: var(--text-primary);
+      border-bottom-color: var(--text-primary);
+    }
+
+    .tab-pane {
+      display: none;
+    }
+
+    .tab-pane.active {
+      display: block;
+    }
+
+    /* Report + Chart Layout */
+    .report-grid {
+      display: grid;
+      grid-template-columns: 1.35fr 1fr;
+      gap: 18px;
+    }
+
+    .surface-card {
+      background-color: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px 22px;
+      margin-bottom: 16px;
+    }
+
+    .surface-card h3 {
+      margin: 0 0 12px 0;
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+
+    .report-md h1, .report-md h2, .report-md h3 {
+      color: var(--text-primary);
+      margin-top: 16px;
+      margin-bottom: 8px;
+    }
+
+    .report-md h1:first-child {
+      margin-top: 0;
+      font-size: 1.25rem;
+    }
+
+    .report-md h3 {
+      font-size: 0.98rem;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 4px;
+    }
+
+    .report-md p, .report-md li {
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+    }
+
+    .report-md strong {
+      color: var(--text-primary);
+    }
+
+    .report-md code {
+      background-color: var(--bg-elevated);
+      border: 1px solid var(--border);
+      padding: 1px 6px;
+      border-radius: 4px;
+      font-size: 0.82rem;
+      color: var(--text-primary);
+    }
+
+    /* Trace Cards */
+    .trace-card {
+      background-color: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-left: 4px solid var(--text-primary);
+      border-radius: 8px;
+      padding: 14px 18px;
+      margin-bottom: 12px;
+    }
+
+    .trace-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+
+    .agent-pill {
+      display: inline-block;
+      background-color: var(--badge-solid-bg);
+      color: var(--badge-solid-text);
+      padding: 3px 10px;
+      border-radius: 999px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .step-label {
+      font-size: 0.74rem;
+      font-weight: 700;
+      color: var(--text-muted);
+    }
+
+    .trace-action {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 6px;
+    }
+
+    .trace-detail {
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      white-space: pre-wrap;
+      word-break: break-word;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      background-color: var(--bg-elevated);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 10px 12px;
+    }
+
+    /* Code Blocks & Tables */
+    .code-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+
+    pre.code-block {
+      background-color: var(--bg-code);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 14px 16px;
+      overflow-x: auto;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 0.84rem;
+      line-height: 1.5;
+      color: var(--text-primary);
+      margin: 0 0 16px 0;
+    }
+
+    .table-wrap {
+      overflow-x: auto;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background-color: var(--bg-surface);
+    }
+
+    table.data-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.84rem;
+      text-align: left;
+    }
+
+    table.data-table th {
+      background-color: var(--table-header-bg);
+      color: var(--text-primary);
+      font-weight: 700;
+      padding: 10px 14px;
+      border-bottom: 1px solid var(--border);
+      white-space: nowrap;
+    }
+
+    table.data-table td {
+      padding: 10px 14px;
+      color: var(--text-secondary);
+      border-bottom: 1px solid var(--border);
+    }
+
+    table.data-table tr:last-child td {
+      border-bottom: none;
+    }
+
+    table.data-table tr:hover td {
+      background-color: var(--table-row-hover);
+      color: var(--text-primary);
+    }
+
+    /* Vector Chunk Card */
+    .doc-card {
+      background-color: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 16px 18px;
+      margin-bottom: 12px;
+    }
+
+    .doc-card-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 10px;
+      flex-wrap: wrap;
+    }
+
+    .doc-title {
+      font-weight: 700;
+      font-size: 0.95rem;
+      color: var(--text-primary);
+    }
+
+    .score-pill {
+      background-color: var(--badge-solid-bg);
+      color: var(--badge-solid-text);
+      padding: 2px 9px;
+      border-radius: 999px;
+      font-size: 0.74rem;
+      font-weight: 700;
+    }
+
+    .doc-text {
+      font-size: 0.88rem;
+      color: var(--text-secondary);
+      white-space: pre-wrap;
+      line-height: 1.55;
+      margin-bottom: 8px;
+    }
+
+    .doc-meta {
+      font-size: 0.76rem;
+      color: var(--text-muted);
+    }
+
+    /* Alert Banner */
+    .notice-box {
+      background-color: var(--bg-elevated);
+      border: 1px solid var(--border-strong);
+      border-left: 4px solid var(--text-primary);
+      border-radius: 8px;
+      padding: 12px 16px;
+      color: var(--text-primary);
+      font-size: 0.88rem;
+      margin-top: 14px;
+    }
+
+    /* User Guide Steps */
+    .guide-step {
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+      background-color: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 16px 18px;
+      margin-bottom: 10px;
+    }
+
+    .guide-num {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background-color: var(--badge-solid-bg);
+      color: var(--badge-solid-text);
+      font-weight: 700;
+      font-size: 0.84rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .guide-step h4 {
+      margin: 0 0 4px 0;
+      font-size: 0.95rem;
+      color: var(--text-primary);
+    }
+
+    .guide-step p {
+      margin: 0;
+      font-size: 0.86rem;
+      color: var(--text-secondary);
+    }
+
+    .agents-2col {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      margin: 14px 0 22px 0;
+    }
+
+    /* Toast Notification */
+    .toast {
+      position: fixed;
+      bottom: 22px;
+      right: 22px;
+      background-color: var(--btn-primary-bg);
+      color: var(--btn-primary-text);
+      padding: 10px 18px;
+      border-radius: 8px;
+      font-size: 0.86rem;
+      font-weight: 600;
+      box-shadow: var(--shadow-md);
+      z-index: 100;
+      display: none;
+    }
+
+    .toast.show {
+      display: block;
+      animation: fadeIn 0.2s ease;
+    }
+
+    /* Spinner */
+    .spinner {
+      width: 15px;
+      height: 15px;
+      border: 2px solid var(--btn-primary-text);
+      border-top-color: transparent;
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+      display: inline-block;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* Responsive Breakpoints */
+    @media (max-width: 1024px) {
+      .pipeline-grid { grid-template-columns: repeat(2, 1fr); }
+      .report-grid { grid-template-columns: 1fr; }
+      .kpi-grid { grid-template-columns: repeat(2, 1fr); }
+      .scenario-grid, .guide-3col, .agents-2col { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 820px) {
+      .sidebar {
+        position: fixed;
+        left: -280px;
+        z-index: 40;
+        transition: left 0.2s ease;
+      }
+      .sidebar.open { left: 0; }
+      .mobile-menu-btn { display: inline-flex; }
+      .content { padding: 18px; }
+      .topbar { padding: 0 16px; }
+    }
+  </style>
+</head>
+<body>
+<div class="app-shell">
+  <!-- =====================================================================
+       SIDEBAR NAVIGATION
+  ===================================================================== -->
+  <aside class="sidebar" id="sidebar">
+    <div>
+      <div class="brand">
+        <div class="brand-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
+            <polyline points="2 17 12 22 22 17"></polyline>
+            <polyline points="2 12 12 17 22 12"></polyline>
+          </svg>
+        </div>
+        <div>
+          <div class="brand-name">NexusOps AI</div>
+          <div class="brand-sub">Enterprise Analyst Suite</div>
+        </div>
+      </div>
+
+      <div class="nav-label">Navigation</div>
+      <div class="nav-list">
+        <button class="nav-item active" data-page="workspace" onclick="navigateTo('workspace')">
+          <span class="nav-item-left">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+            Run Analysis
+          </span>
+        </button>
+
+        <button class="nav-item" data-page="guide" onclick="navigateTo('guide')">
+          <span class="nav-item-left">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path></svg>
+            User Guide
+          </span>
+        </button>
+
+        <button class="nav-item" data-page="data" onclick="navigateTo('data')">
+          <span class="nav-item-left">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="5" rx="9" ry="3"></ellipse><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"></path><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"></path></svg>
+            Data &amp; Policies
+          </span>
+        </button>
+
+        <button class="nav-item" data-page="governance" onclick="navigateTo('governance')">
+          <span class="nav-item-left">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+            HITL Governance
+          </span>
+          <span class="nav-count" id="sidebarPendingCount">0</span>
+        </button>
+      </div>
+    </div>
+
+    <div class="status-box">
+      <div class="status-title">Runtime Status</div>
+      <div class="status-row">
+        <span class="status-k">SQL Engine</span>
+        <span class="status-v"><span class="dot"></span><span id="statusDbEngine">SQLite + Vector</span></span>
+      </div>
+      <div class="status-row">
+        <span class="status-k">Vector Store</span>
+        <span class="status-v"><span class="dot"></span>11 Chunks Ready</span>
+      </div>
+      <div class="status-row">
+        <span class="status-k">Orchestrator</span>
+        <span class="status-v"><span class="dot"></span>LangGraph Active</span>
+      </div>
+    </div>
+  </aside>
+
+  <!-- =====================================================================
+       MAIN CONTENT SHELL
+  ===================================================================== -->
+  <div class="main-wrapper">
+    <!-- Top Header Bar -->
+    <header class="topbar">
+      <div class="topbar-left">
+        <button class="mobile-menu-btn" onclick="toggleSidebar()" aria-label="Toggle Menu">☰</button>
+        <div class="breadcrumb">
+          <span>NexusOps AI</span>
+          <span>/</span>
+          <strong id="breadcrumbCurrent">Run Analysis</strong>
+        </div>
+      </div>
+
+      <div class="topbar-right">
+        <button class="btn-ghost-sm" onclick="navigateTo('guide')">? Instructions</button>
+
+        <!-- Professional Segmented Theme Switch -->
+        <div class="theme-switch" role="group" aria-label="Theme Switch">
+          <button type="button" class="theme-opt active" id="themeBtnBlack">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+            Black
+          </button>
+          <button type="button" class="theme-opt" id="themeBtnWhite">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+            White
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <main class="content">
+      <!-- ===================================================================
+           PAGE 1: WORKSPACE (RUN ANALYSIS)
+      =================================================================== -->
+      <section class="page-section active" id="page-workspace">
+        <div class="hero-card">
+          <div class="hero-eyebrow">Multi-Agent Enterprise Analytics • Hybrid SQL + Vector Architecture</div>
+          <h1 class="hero-title">Autonomous Enterprise Data Analyst &amp; Operations</h1>
+          <p class="hero-desc">
+            Investigate business performance by uniting <strong>relational ERP SQL tables</strong> with <strong>semantic policy vector search</strong>, automated compliance cross-checking, and <strong>Human-in-the-Loop (HITL)</strong> governance gates.
+          </p>
+        </div>
+
+        <!-- 5-Stage Visual Pipeline -->
+        <div class="pipeline-grid" id="pipelineGrid">
+          <div class="pipeline-step" data-stage="0">
+            <div class="pipeline-top"><span class="pipeline-num">Stage 01</span><span class="pipeline-state">Ready</span></div>
+            <div class="pipeline-name">Supervisor</div>
+            <div class="pipeline-sub">Decomposes task</div>
+          </div>
+          <div class="pipeline-step" data-stage="1">
+            <div class="pipeline-top"><span class="pipeline-num">Stage 02</span><span class="pipeline-state">Ready</span></div>
+            <div class="pipeline-name">ReAct SQL Analyst</div>
+            <div class="pipeline-sub">Queries &amp; repairs SQL</div>
+          </div>
+          <div class="pipeline-step" data-stage="2">
+            <div class="pipeline-top"><span class="pipeline-num">Stage 03</span><span class="pipeline-state">Ready</span></div>
+            <div class="pipeline-name">Doc Specialist</div>
+            <div class="pipeline-sub">Hybrid Vector Search</div>
+          </div>
+          <div class="pipeline-step" data-stage="3">
+            <div class="pipeline-top"><span class="pipeline-num">Stage 04</span><span class="pipeline-state">Ready</span></div>
+            <div class="pipeline-name">Compliance Critic</div>
+            <div class="pipeline-sub">Cross-checks policy</div>
+          </div>
+          <div class="pipeline-step" data-stage="4">
+            <div class="pipeline-top"><span class="pipeline-num">Stage 05</span><span class="pipeline-state">Ready</span></div>
+            <div class="pipeline-name">HITL Gate</div>
+            <div class="pipeline-sub">Human audit sign-off</div>
+          </div>
+        </div>
+
+        <!-- Collapsible Quick Start Guide -->
+        <div class="accordion open" id="quickGuideAcc">
+          <button type="button" class="accordion-header" onclick="toggleAccordion('quickGuideAcc')">
+            <span style="display:inline-flex; align-items:center; gap:8px;">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+              Quick Start Instructions — How to Run &amp; Test
+            </span>
+            <span id="quickGuideAccIcon">▾</span>
+          </button>
+          <div class="accordion-body">
+            <div class="guide-3col">
+              <div class="guide-mini">
+                <div class="guide-mini-title">1. Pick or Write a Prompt</div>
+                <p class="guide-mini-text">Click any pre-configured scenario card below or type your own business question in the prompt editor.</p>
+              </div>
+              <div class="guide-mini">
+                <div class="guide-mini-title">2. Run the Multi-Agent Graph</div>
+                <p class="guide-mini-text">Click <strong>Run Analysis</strong>. Four specialized LangGraph agents execute sequentially and log every SQL and vector call.</p>
+              </div>
+              <div class="guide-mini">
+                <div class="guide-mini-title">3. Review Evidence &amp; Approve</div>
+                <p class="guide-mini-text">Inspect the Executive Report, Reasoning Trace, SQL Lab, and approve or reject the staged audit ticket in <strong>HITL Gate</strong>.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 1-Click Scenario Cards -->
+        <div class="section-title">Select a Test Scenario or Write a Custom Investigation Prompt</div>
+        <div class="scenario-grid">
+          <button class="scenario-card" onclick="runScenario('Why did North America operating margin drop in Q3 2024, and did any sales contracts breach corporate discount guidelines?')">
+            <span class="scenario-tag">Scenario 01 • Recommended</span>
+            <div class="scenario-title">Q3 Margin Drop &amp; Breach Audit</div>
+            <div class="scenario-desc">Diagnoses North America's 14.2% margin drop and flags contracts exceeding 20% discount.</div>
+          </button>
+
+          <button class="scenario-card" onclick="runScenario('Show me all sales contracts in North America and identify which ones exceeded standard discount thresholds without Form EW-99.')">
+            <span class="scenario-tag">Scenario 02 • SQL + Rules</span>
+            <div class="scenario-title">High-Discount Contract Scan</div>
+            <div class="scenario-desc">Audits individual Q3 North America contracts against corporate waiver requirements.</div>
+          </button>
+
+          <button class="scenario-card" onclick="runScenario('Summarize the corporate discount policy rules regarding maximum allowed discounts, Form EW-99 waivers, and the Q3 CFO remediation mandate.')">
+            <span class="scenario-tag">Scenario 03 • Vector Search</span>
+            <div class="scenario-title">Policy &amp; CFO Waiver Rules</div>
+            <div class="scenario-desc">Retrieves semantic citations from DOC-POL-2024-04 and Q3 CFO Memorandums.</div>
+          </button>
+        </div>
+
+        <!-- Prompt Box -->
+        <div class="prompt-panel">
+          <label class="prompt-label" for="promptInput">Business Question / Investigation Prompt</label>
+          <textarea class="prompt-textarea" id="promptInput">Why did North America operating margin drop in Q3 2024, and did any sales contracts breach corporate discount guidelines?</textarea>
+          <div class="prompt-actions">
+            <button type="button" class="btn-primary" id="runBtn">
+              <span id="runBtnIcon">▶</span>
+              <span id="runBtnText">Run Multi-Agent Analysis</span>
+            </button>
+            <button type="button" class="btn-secondary" id="clearBtn" onclick="clearResults()">↺ Clear Results</button>
+          </div>
+        </div>
+
+        <!-- Results Container (Hidden until executed) -->
+        <div id="resultsContainer" style="display: none;">
+          <div class="kpi-grid">
+            <div class="kpi-card">
+              <div class="kpi-label">SQL Rows Analyzed</div>
+              <div class="kpi-value" id="kpiSqlRows">0</div>
+            </div>
+            <div class="kpi-card">
+              <div class="kpi-label">Policy Chunks Cited</div>
+              <div class="kpi-value" id="kpiDocChunks">0</div>
+            </div>
+            <div class="kpi-card">
+              <div class="kpi-label">Violations Flagged</div>
+              <div class="kpi-value" id="kpiViolations">0</div>
+            </div>
+            <div class="kpi-card">
+              <div class="kpi-label">Audit Ticket Staged</div>
+              <div class="kpi-value" id="kpiTicket">None</div>
+            </div>
+          </div>
+
+          <div class="tabs-bar">
+            <button type="button" class="tab-btn active" data-tab="report" onclick="switchResultTab('report')">Executive Report</button>
+            <button type="button" class="tab-btn" data-tab="trace" onclick="switchResultTab('trace')">Reasoning Trace</button>
+            <button type="button" class="tab-btn" data-tab="sql" onclick="switchResultTab('sql')">SQL Lab</button>
+            <button type="button" class="tab-btn" data-tab="vector" onclick="switchResultTab('vector')">Vector Search</button>
+            <button type="button" class="tab-btn" data-tab="hitl" onclick="switchResultTab('hitl')">HITL Decision Gate</button>
+          </div>
+
+          <!-- Tab 1: Executive Report -->
+          <div class="tab-pane active" id="tab-report">
+            <div class="report-grid">
+              <div class="surface-card">
+                <div class="report-md" id="reportMarkdown"></div>
+                <div class="notice-box" id="reportAlert" style="display:none;"></div>
+              </div>
+              <div class="surface-card">
+                <h3>Regional Operating Margin (Q1–Q3 2024)</h3>
+                <p style="font-size:0.82rem; color:var(--text-secondary); margin-top:-6px; margin-bottom:14px;">
+                  Highlighted bars track North America margin collapsing from 29.0% (Q1) to 14.2% (Q3).
+                </p>
+                <div id="marginChartContainer"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tab 2: Reasoning Trace -->
+          <div class="tab-pane" id="tab-trace">
+            <div class="surface-card">
+              <h3>Step-by-Step Multi-Agent Reasoning Trace</h3>
+              <p style="font-size:0.85rem; color:var(--text-secondary); margin-top:-6px; margin-bottom:16px;">
+                Live chronological log of supervisor decomposition, tool invocations, database observations, and compliance checks.
+              </p>
+              <div id="traceList"></div>
+            </div>
+          </div>
+
+          <!-- Tab 3: SQL Lab -->
+          <div class="tab-pane" id="tab-sql">
+            <div class="surface-card">
+              <div class="code-header">
+                <h3 style="margin:0;">Generated Analytical SQL Query</h3>
+                <button type="button" class="btn-ghost-sm" onclick="copyText('sqlCodeBlock', 'SQL query copied!')">Copy SQL</button>
+              </div>
+              <pre class="code-block" id="sqlCodeBlock"></pre>
+              <div class="notice-box" id="sqlReflectionBox" style="display:none; margin-bottom:16px;"></div>
+
+              <h3 style="margin-top:8px;">Query Result Dataset (<span id="sqlRowCountLabel">0</span> rows)</h3>
+              <div class="table-wrap" id="sqlResultTableWrap"></div>
+            </div>
+
+            <div class="accordion" id="schemaAccordion">
+              <button type="button" class="accordion-header" onclick="toggleAccordion('schemaAccordion')">
+                <span>View Inspected Database Schema DDL</span>
+                <span>▾</span>
+              </button>
+              <div class="accordion-body">
+                <pre class="code-block" id="schemaCodeBlock" style="margin-top:14px; margin-bottom:0;"></pre>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tab 4: Vector Search -->
+          <div class="tab-pane" id="tab-vector">
+            <div class="surface-card">
+              <h3>Retrieved Corporate Policy &amp; Memo Chunks</h3>
+              <p style="font-size:0.85rem; color:var(--text-secondary); margin-top:-6px; margin-bottom:16px;">
+                Ranked by normalized cosine similarity across corporate policy files, CFO memorandums, and audit SOPs.
+              </p>
+              <div id="vectorChunksList"></div>
+            </div>
+
+            <div class="accordion" id="vectorSqlAccordion">
+              <button type="button" class="accordion-header" onclick="toggleAccordion('vectorSqlAccordion')">
+                <span>Equivalent Hybrid Vector SQL Syntax (VECTOR_DISTANCE)</span>
+                <span>▾</span>
+              </button>
+              <div class="accordion-body">
+                <pre class="code-block" id="vectorSqlBlock" style="margin-top:14px; margin-bottom:0;"></pre>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tab 5: HITL Decision Gate -->
+          <div class="tab-pane" id="tab-hitl">
+            <div class="surface-card">
+              <h3>Human-in-the-Loop (HITL) Decision Gate</h3>
+              <p style="font-size:0.88rem; color:var(--text-secondary); margin-top:-4px; margin-bottom:16px;">
+                High-impact financial holds drafted by the Compliance Critic require explicit Compliance Officer sign-off before execution.
+              </p>
+              <div id="hitlTicketArea"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===================================================================
+           PAGE 2: USER GUIDE & DETAILED INSTRUCTIONS
+      =================================================================== -->
+      <section class="page-section" id="page-guide">
+        <div class="hero-card">
+          <div class="hero-eyebrow">Documentation • Onboarding Manual</div>
+          <h1 class="hero-title">User Guide &amp; Architecture Manual</h1>
+          <p class="hero-desc">
+            Step-by-step instructions to navigate NexusOps AI, understand the 4 collaborating agents, and connect live LLMs or enterprise databases.
+          </p>
+        </div>
+
+        <h2 class="section-title" style="font-size:1.1rem; margin-bottom:12px;">1. Step-by-Step Testing Walkthrough</h2>
+        <div class="guide-step">
+          <div class="guide-num">1</div>
+          <div>
+            <h4>Toggle Between Black &amp; White Themes</h4>
+            <p>Use the <strong>Black / White</strong> switch in the top-right header bar anytime. Your preference is saved automatically in your browser.</p>
+          </div>
+        </div>
+        <div class="guide-step">
+          <div class="guide-num">2</div>
+          <div>
+            <h4>Inspect the Enterprise Data First</h4>
+            <p>Click <strong>Data &amp; Policies</strong> in the left sidebar to inspect the live <code>regional_financials</code> and <code>sales_contracts</code> tables along with the internal policy text files.</p>
+          </div>
+        </div>
+        <div class="guide-step">
+          <div class="guide-num">3</div>
+          <div>
+            <h4>Run an Autonomous Multi-Agent Investigation</h4>
+            <p>Open <strong>Run Analysis</strong> and select <strong>Scenario 01 (Q3 Margin Drop &amp; Breach Audit)</strong>. Watch the 5-stage pipeline execute from decomposition to synthesis.</p>
+          </div>
+        </div>
+        <div class="guide-step">
+          <div class="guide-num">4</div>
+          <div>
+            <h4>Inspect SQL Queries &amp; Read-Only Guardrails</h4>
+            <p>Open the <strong>SQL Lab</strong> tab to verify the generated analytical SQL, returned rows, and read-only safety protections (blocking destructive <code>DROP</code> / <code>DELETE</code> operations).</p>
+          </div>
+        </div>
+        <div class="guide-step">
+          <div class="guide-num">5</div>
+          <div>
+            <h4>Verify Vector Search Grounding</h4>
+            <p>Open the <strong>Vector Search</strong> tab to review exact semantic matches from <code>corporate_discount_policy.txt</code> and <code>q3_2024_cfo_memo.txt</code>.</p>
+          </div>
+        </div>
+        <div class="guide-step">
+          <div class="guide-num">6</div>
+          <div>
+            <h4>Authorize or Reject via HITL Governance</h4>
+            <p>Non-compliant contracts exceeding the 20% discount cap without Form <code>EW-99</code> automatically generate an audit ticket. Review and sign off in <strong>HITL Governance</strong>.</p>
+          </div>
+        </div>
+
+        <h2 class="section-title" style="font-size:1.1rem; margin-top:24px;">2. How the 4 Autonomous Agents Collaborate</h2>
+        <div class="agents-2col">
+          <div class="surface-card" style="margin-bottom:0;">
+            <h3>01. Supervisor Orchestrator</h3>
+            <p style="color:var(--text-secondary); margin:0;">Decomposes broad executive questions into structured sub-tasks spanning quantitative SQL analysis, unstructured policy lookup, and compliance auditing.</p>
+          </div>
+          <div class="surface-card" style="margin-bottom:0;">
+            <h3>02. ReAct SQL Data Analyst</h3>
+            <p style="color:var(--text-secondary); margin:0;">Implements the <strong>Thought → Action → Observation</strong> loop. Inspects database schemas, executes safe read-only queries, and performs automated <strong>self-healing reflection</strong> if a query fails.</p>
+          </div>
+          <div class="surface-card" style="margin-bottom:0;">
+            <h3>03. Document Specialist (Vector RAG)</h3>
+            <p style="color:var(--text-secondary); margin:0;">Executes hybrid semantic cosine search over corporate memos, discount policies, and audit SOPs, citing exact excerpts and similarity scores.</p>
+          </div>
+          <div class="surface-card" style="margin-bottom:0;">
+            <h3>04. Compliance Critic &amp; HITL Gate</h3>
+            <p style="color:var(--text-secondary); margin:0;">Cross-references contract discount figures against corporate limits (&gt; 20% threshold), drafts incident tickets in <code>PENDING_APPROVAL</code> status, and waits for human approval.</p>
+          </div>
+        </div>
+
+        <div class="surface-card">
+          <h3>3. Connecting Live LLMs or Production Databases (Optional)</h3>
+          <p style="color:var(--text-secondary); margin-bottom:10px;">
+            NexusOps AI runs <strong>100% locally out of the box</strong> with zero API keys required. To enable live LLM generation or an external Database 23ai backend:
+          </p>
+          <pre class="code-block" style="margin-bottom:0;"># 1. Copy .env.example to .env
+copy .env.example .env
+
+# 2. Set your LLM provider &amp; key inside .env
+LLM_PROVIDER=openai
+OPENAI_API_KEY=sk-...
+
+# 3. Optional: Enable enterprise database backend
+ORACLE_23AI_ENABLED=true
+ORACLE_DSN=localhost:1521/FREEPDB1</pre>
+        </div>
+      </section>
+
+      <!-- ===================================================================
+           PAGE 3: DATA & POLICIES EXPLORER
+      =================================================================== -->
+      <section class="page-section" id="page-data">
+        <div class="hero-card">
+          <div class="hero-eyebrow">Dual-Store Memory • Structured SQL + Vector Knowledge</div>
+          <h1 class="hero-title">Enterprise Data &amp; Policy Knowledge Base</h1>
+          <p class="hero-desc">
+            Inspect the live relational tables, unstructured corporate policy files, and enterprise DDL powering the autonomous agents.
+          </p>
+        </div>
+
+        <div class="tabs-bar">
+          <button type="button" class="tab-btn active" data-datatab="tables" onclick="switchDataTab('tables')">Relational Tables</button>
+          <button type="button" class="tab-btn" data-datatab="policies" onclick="switchDataTab('policies')">Corporate Policies</button>
+          <button type="button" class="tab-btn" data-datatab="ddl" onclick="switchDataTab('ddl')">Database Schema DDL</button>
+        </div>
+
+        <div class="tab-pane active" id="datatab-tables">
+          <div class="surface-card">
+            <h3>1. regional_financials (Quarterly Margin &amp; Revenue)</h3>
+            <div class="table-wrap" id="dataFinancialsTable">Loading...</div>
+          </div>
+          <div class="surface-card">
+            <h3>2. sales_contracts (Q3 2024 Contract Ledger)</h3>
+            <div class="table-wrap" id="dataContractsTable">Loading...</div>
+          </div>
+        </div>
+
+        <div class="tab-pane" id="datatab-policies">
+          <div id="dataPoliciesList">Loading...</div>
+        </div>
+
+        <div class="tab-pane" id="datatab-ddl">
+          <div class="surface-card">
+            <div class="code-header">
+              <h3 style="margin:0;">Production Hybrid SQL &amp; Vector Schema DDL</h3>
+              <button class="btn-ghost-sm" onclick="copyText('dataDdlBlock', 'DDL copied!')">📋 Copy DDL</button>
+            </div>
+            <pre class="code-block" id="dataDdlBlock">Loading...</pre>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===================================================================
+           PAGE 4: HITL GOVERNANCE CONSOLE
+      =================================================================== -->
+      <section class="page-section" id="page-governance">
+        <div class="hero-card">
+          <div class="hero-eyebrow">Human-in-the-Loop • Audit Control Center</div>
+          <h1 class="hero-title">Governance &amp; HITL Approval Console</h1>
+          <p class="hero-desc">
+            Review, authorize, or reject compliance remediation tickets autonomously staged by the Compliance Critic Agent.
+          </p>
+        </div>
+
+        <div class="kpi-grid-3">
+          <div class="kpi-card">
+            <div class="kpi-label">Total Incidents</div>
+            <div class="kpi-value" id="govTotal">0</div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-label">Pending Approval</div>
+            <div class="kpi-value" id="govPending">0</div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-label">Reviewed / Closed</div>
+            <div class="kpi-value" id="govClosed">0</div>
+          </div>
+        </div>
+
+        <div class="surface-card">
+          <h3>Pending Incidents Awaiting Compliance Officer Sign-Off</h3>
+          <div id="govPendingList">Loading...</div>
+        </div>
+
+        <div class="surface-card">
+          <div class="code-header">
+            <h3 style="margin:0;">Full Audit Incident Ledger</h3>
+            <button type="button" class="btn-secondary" onclick="resetIncidents()">Clear Demo Ledger</button>
+          </div>
+          <div class="table-wrap" id="govLedgerTable" style="margin-top:12px;">Loading...</div>
+        </div>
+      </section>
+    </main>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+  // =========================================================================
+  // STATE & INITIALIZATION
+  // =========================================================================
+  let lastAnalysisResult = null;
+  let lastMarginData = [];
+
+  const PAGE_TITLES = {
+    workspace: "Run Analysis",
+    guide: "User Guide & Instructions",
+    data: "Enterprise Data & Policies",
+    governance: "HITL Governance Console"
+  };
+
+  (function init() {
+    const savedTheme = localStorage.getItem("nexusops_theme") || "black";
+    setTheme(savedTheme, false);
+
+    document.getElementById("themeBtnBlack").addEventListener("click", () => setTheme("black", true));
+    document.getElementById("themeBtnWhite").addEventListener("click", () => setTheme("white", true));
+    document.getElementById("runBtn").addEventListener("click", () => executeAnalysis());
+
+    refreshStatusAndData();
+  })();
+
+  // =========================================================================
+  // THEME SWITCHER (BLACK / WHITE)
+  // =========================================================================
+  function setTheme(mode, notify = false) {
+    document.documentElement.setAttribute("data-theme", mode);
+    localStorage.setItem("nexusops_theme", mode);
+
+    document.getElementById("themeBtnBlack").classList.toggle("active", mode === "black");
+    document.getElementById("themeBtnWhite").classList.toggle("active", mode === "white");
+
+    // Re-render SVG chart so bar colors match current theme immediately
+    if (lastMarginData.length > 0) {
+      renderMarginChart(lastMarginData);
+    }
+    if (notify) {
+      showToast(mode === "black" ? "Switched to Obsidian Black theme" : "Switched to Crisp White theme");
+    }
+  }
+
+  // =========================================================================
+  // NAVIGATION & UI HELPERS
+  // =========================================================================
+  function navigateTo(pageKey) {
+    document.querySelectorAll(".page-section").forEach(el => el.classList.remove("active"));
+    document.getElementById("page-" + pageKey).classList.add("active");
+
+    document.querySelectorAll(".nav-item").forEach(btn => {
+      btn.classList.toggle("active", btn.dataset.page === pageKey);
+    });
+
+    document.getElementById("breadcrumbCurrent").textContent = PAGE_TITLES[pageKey] || pageKey;
+    document.getElementById("sidebar").classList.remove("open");
+
+    if (pageKey === "data") loadEnterpriseData();
+    if (pageKey === "governance") loadGovernanceConsole();
+  }
+
+  function toggleSidebar() {
+    document.getElementById("sidebar").classList.toggle("open");
+  }
+
+  function toggleAccordion(id) {
+    document.getElementById(id).classList.toggle("open");
+  }
+
+  function switchResultTab(tabKey) {
+    document.querySelectorAll("#resultsContainer .tab-btn").forEach(b => {
+      b.classList.toggle("active", b.dataset.tab === tabKey);
+    });
+    document.querySelectorAll("#resultsContainer .tab-pane").forEach(p => {
+      p.classList.toggle("active", p.id === "tab-" + tabKey);
+    });
+  }
+
+  function switchDataTab(tabKey) {
+    document.querySelectorAll("#page-data .tab-btn").forEach(b => {
+      b.classList.toggle("active", b.dataset.datatab === tabKey);
+    });
+    document.querySelectorAll("#page-data .tab-pane").forEach(p => {
+      p.classList.toggle("active", p.id === "datatab-" + tabKey);
+    });
+  }
+
+  function showToast(msg) {
+    const el = document.getElementById("toast");
+    el.textContent = msg;
+    el.classList.add("show");
+    setTimeout(() => el.classList.remove("show"), 2600);
+  }
+
+  function copyText(elementId, successMsg) {
+    const txt = document.getElementById(elementId).textContent;
+    navigator.clipboard.writeText(txt).then(() => showToast(successMsg));
+  }
+
+  function escapeHtml(str) {
+    if (str === null || str === undefined) return "";
+    return String(str)
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;");
+  }
+
+  // =========================================================================
+  // PIPELINE STEPPER VISUALS
+  // =========================================================================
+  function setPipelineState(stageState) {
+    document.querySelectorAll("#pipelineGrid .pipeline-step").forEach((node, idx) => {
+      node.classList.remove("running", "done");
+      const badge = node.querySelector(".pipeline-state");
+      if (stageState === "ready") {
+        badge.textContent = "Ready";
+      } else if (stageState === "running") {
+        node.classList.add("running");
+        badge.textContent = "Running";
+      } else if (stageState === "done") {
+        node.classList.add("done");
+        badge.textContent = "Done";
+      }
+    });
+  }
+
+  // =========================================================================
+  // API CALLS: WORKFLOW EXECUTION
+  // =========================================================================
+  function runScenario(queryText) {
+    document.getElementById("promptInput").value = queryText;
+    executeAnalysis();
+  }
+
+  function clearResults() {
+    lastAnalysisResult = null;
+    document.getElementById("resultsContainer").style.display = "none";
+    setPipelineState("ready");
+  }
+
+  async function executeAnalysis() {
+    const query = document.getElementById("promptInput").value.trim();
+    if (!query) {
+      showToast("Please enter an investigation prompt first.");
+      return;
+    }
+
+    const btn = document.getElementById("runBtn");
+    const btnIcon = document.getElementById("runBtnIcon");
+    const btnText = document.getElementById("runBtnText");
+
+    btn.disabled = true;
+    btnIcon.innerHTML = '<span class="spinner"></span>';
+    btnText.textContent = "Analyzing...";
+    setPipelineState("running");
+
+    try {
+      const resp = await fetch("/api/analyze", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ query })
+      });
+      if (!resp.ok) throw new Error("Server returned " + resp.status);
+      const data = await resp.json();
+      lastAnalysisResult = data;
+
+      setPipelineState("done");
+      renderAnalysisResult(data);
+      refreshStatusAndData();
+      showToast("Multi-agent analysis complete.");
+    } catch (err) {
+      setPipelineState("ready");
+      showToast("Error executing workflow: " + err.message);
+    } finally {
+      btn.disabled = false;
+      btnIcon.textContent = "▶";
+      btnText.textContent = "Run Multi-Agent Analysis";
+    }
+  }
+
+  function renderAnalysisResult(res) {
+    document.getElementById("resultsContainer").style.display = "block";
+
+    const sqlRows = res.sql_results?.row_count || 0;
+    const docChunks = (res.doc_results || []).length;
+    const violations = (res.compliance_violations || []).length;
+    const ticketId = res.audit_ticket?.incident_id || "None";
+
+    document.getElementById("kpiSqlRows").textContent = sqlRows;
+    document.getElementById("kpiDocChunks").textContent = docChunks;
+    document.getElementById("kpiViolations").textContent = violations;
+    document.getElementById("kpiTicket").textContent = ticketId;
+
+    // 1. Executive Report (Lightweight safe markdown -> HTML)
+    document.getElementById("reportMarkdown").innerHTML = simpleMarkdownToHtml(res.final_synthesis || "");
+    const alertEl = document.getElementById("reportAlert");
+    if (violations > 0) {
+      alertEl.style.display = "block";
+      alertEl.innerHTML = `<strong>Governance Notice:</strong> ${violations} non-compliant transaction(s) detected. Open the <strong>HITL Decision Gate</strong> tab to authorize or reject the drafted audit ticket.`;
+    } else {
+      alertEl.style.display = "none";
+    }
+
+    if (res.margin_series) {
+      lastMarginData = res.margin_series;
+      renderMarginChart(res.margin_series);
+    }
+
+    // 2. Reasoning Trace
+    const traceHtml = (res.execution_trace || []).map((step, i) => `
+      <div class="trace-card">
+        <div class="trace-top">
+          <span class="agent-pill">${escapeHtml(step.agent)}</span>
+          <span class="step-label">STEP ${String(i + 1).padStart(2, "0")}</span>
+        </div>
+        <div class="trace-action">${escapeHtml(step.action)}</div>
+        <div class="trace-detail">${escapeHtml(step.detail)}</div>
+      </div>
+    `).join("");
+    document.getElementById("traceList").innerHTML = traceHtml;
+
+    // 3. SQL Lab
+    document.getElementById("sqlCodeBlock").textContent = res.sql_query || "-- No SQL generated";
+    document.getElementById("sqlRowCountLabel").textContent = sqlRows;
+    const reflBox = document.getElementById("sqlReflectionBox");
+    if (res.sql_error_reflection) {
+      reflBox.style.display = "block";
+      reflBox.innerHTML = `<strong>Self-Healing Reflection:</strong> ${escapeHtml(res.sql_error_reflection)}`;
+    } else {
+      reflBox.style.display = "none";
+    }
+    document.getElementById("sqlResultTableWrap").innerHTML = buildHtmlTable(
+      res.sql_results?.columns || [],
+      res.sql_results?.rows || []
+    );
+    document.getElementById("schemaCodeBlock").textContent = res.schema_ddl || "";
+
+    // 4. Vector Search
+    const docsHtml = (res.doc_results || []).map(d => `
+      <div class="doc-card">
+        <div class="doc-card-head">
+          <span class="doc-title">📄 ${escapeHtml(d.title)}</span>
+          <span class="score-pill">Cosine Similarity: ${escapeHtml(d.similarity_score)}</span>
+        </div>
+        <div class="doc-text">${escapeHtml(d.text)}</div>
+        <div class="doc-meta">Source: <code>${escapeHtml(d.metadata?.source || "Unknown")}</code> &nbsp;•&nbsp; Category: <code>${escapeHtml(d.doc_type)}</code></div>
+      </div>
+    `).join("");
+    document.getElementById("vectorChunksList").innerHTML = docsHtml || "<p>No document chunks retrieved.</p>";
+    document.getElementById("vectorSqlBlock").textContent = res.oracle_23ai_vector_sql || "";
+
+    // 5. HITL Decision Gate
+    renderHitlGate(res.audit_ticket, res.needs_human_approval);
+  }
+
+  function renderHitlGate(ticket, needsApproval) {
+    const area = document.getElementById("hitlTicketArea");
+    if (!ticket || !needsApproval) {
+      area.innerHTML = `<div class="notice-box">No pending HITL remediation required for this query.</div>`;
+      return;
+    }
+    const d = ticket.details || {};
+    area.innerHTML = `
+      <div class="trace-card" style="margin-bottom:16px;">
+        <div class="trace-top">
+          <span class="agent-pill">${escapeHtml(ticket.incident_id)}</span>
+          <span class="step-label">${escapeHtml(d.severity || "HIGH")}</span>
+        </div>
+        <div class="trace-action">Contract: ${escapeHtml(d.contract_id)} (${escapeHtml(d.region)})</div>
+        <p style="color:var(--text-secondary); margin:6px 0;"><strong>Finding:</strong> ${escapeHtml(d.description)}</p>
+        <p style="color:var(--text-secondary); margin:0;"><strong>Recommended Action:</strong> ${escapeHtml(d.recommended_action)}</p>
+      </div>
+      <div style="display:flex; gap:10px; flex-wrap:wrap;" id="hitlDecisionBtns">
+        <button class="btn-primary" onclick="decideIncident('${escapeHtml(ticket.incident_id)}', 'approve', 'hitlDecisionFeedback')">✓ Approve &amp; Hold Commission</button>
+        <button class="btn-secondary" onclick="decideIncident('${escapeHtml(ticket.incident_id)}', 'reject', 'hitlDecisionFeedback')">✕ Reject / Defer Action</button>
+      </div>
+      <div id="hitlDecisionFeedback"></div>
+    `;
+  }
+
+  // =========================================================================
+  // CRISP MONOCHROME SVG BAR CHART (ZERO EXTERNAL DEPENDENCIES)
+  // =========================================================================
+  function renderMarginChart(series) {
+    const container = document.getElementById("marginChartContainer");
+    if (!series || series.length === 0) {
+      container.innerHTML = "<p>No margin data available.</p>";
+      return;
+    }
+
+    const quarters = ["Q1-2024", "Q2-2024", "Q3-2024"];
+    const regions = ["North America", "EMEA", "APAC", "LATAM"];
+    const width = 460;
+    const height = 250;
+    const pad = { top: 20, right: 16, bottom: 38, left: 36 };
+    const plotW = width - pad.left - pad.right;
+    const plotH = height - pad.top - pad.bottom;
+    const maxVal = 35;
+
+    let svg = `<svg viewBox="0 0 ${width} ${height}" style="width:100%; height:auto; display:block;">`;
+
+    // Horizontal grid lines
+    [0, 10, 20, 30].forEach(tick => {
+      const y = pad.top + plotH - (tick / maxVal) * plotH;
+      svg += `<line x1="${pad.left}" y1="${y}" x2="${width - pad.right}" y2="${y}" stroke="var(--chart-grid)" stroke-width="1"/>`;
+      svg += `<text x="${pad.left - 8}" y="${y + 4}" text-anchor="end" fill="var(--text-muted)" font-size="10">${tick}%</text>`;
+    });
+
+    const groupW = plotW / quarters.length;
+    const barW = Math.min(20, (groupW - 22) / regions.length);
+
+    quarters.forEach((q, qi) => {
+      const gx = pad.left + qi * groupW + 12;
+      svg += `<text x="${pad.left + qi * groupW + groupW / 2}" y="${height - 12}" text-anchor="middle" fill="var(--text-secondary)" font-size="11" font-weight="600">${q}</text>`;
+
+      regions.forEach((reg, ri) => {
+        const rec = series.find(r => r.fiscal_quarter === q && r.region === reg);
+        const val = rec ? Number(rec.operating_margin_pct) : 0;
+        const bh = (val / maxVal) * plotH;
+        const bx = gx + ri * (barW + 4);
+        const by = pad.top + plotH - bh;
+        const fill = reg === "North America" ? "var(--chart-bar-hi)" : "var(--chart-bar-lo)";
+        svg += `<rect x="${bx}" y="${by}" width="${barW}" height="${bh}" rx="3" fill="${fill}">
+                  <title>${q} • ${reg}: ${val}%</title>
+                </rect>`;
+        if (reg === "North America") {
+          svg += `<text x="${bx + barW / 2}" y="${by - 5}" text-anchor="middle" fill="var(--text-primary)" font-size="9.5" font-weight="700">${val}%</text>`;
+        }
+      });
+    });
+
+    svg += `</svg>`;
+    svg += `
+      <div style="display:flex; gap:16px; justify-content:center; margin-top:8px; font-size:0.78rem; color:var(--text-secondary);">
+        <span style="display:inline-flex; align-items:center; gap:6px;">
+          <span style="width:10px; height:10px; border-radius:2px; background:var(--chart-bar-hi); display:inline-block;"></span> North America
+        </span>
+        <span style="display:inline-flex; align-items:center; gap:6px;">
+          <span style="width:10px; height:10px; border-radius:2px; background:var(--chart-bar-lo); display:inline-block;"></span> EMEA / APAC / LATAM
+        </span>
+      </div>
+    `;
+    container.innerHTML = svg;
+  }
+
+  // =========================================================================
+  // STATUS, DATA EXPLORER & GOVERNANCE APIS
+  // =========================================================================
+  async function refreshStatusAndData() {
+    try {
+      const resp = await fetch("/api/status");
+      const data = await resp.json();
+      document.getElementById("statusDbEngine").textContent = data.db_engine;
+      document.getElementById("sidebarPendingCount").textContent = data.pending_incidents;
+      if (data.margin_series && lastMarginData.length === 0) {
+        lastMarginData = data.margin_series;
+      }
+    } catch (e) { /* silent */ }
+  }
+
+  async function loadEnterpriseData() {
+    try {
+      const resp = await fetch("/api/data");
+      const data = await resp.json();
+      document.getElementById("dataFinancialsTable").innerHTML = buildHtmlTable(
+        data.financials.columns, data.financials.rows
+      );
+      document.getElementById("dataContractsTable").innerHTML = buildHtmlTable(
+        data.contracts.columns, data.contracts.rows
+      );
+      document.getElementById("dataPoliciesList").innerHTML = data.documents.map(doc => `
+        <div class="doc-card">
+          <div class="doc-card-head">
+            <span class="doc-title">📄 ${escapeHtml(doc.title)}</span>
+            <span class="score-pill">${escapeHtml(doc.filename)}</span>
+          </div>
+          <div class="doc-text">${escapeHtml(doc.content)}</div>
+        </div>
+      `).join("");
+      document.getElementById("dataDdlBlock").textContent = data.ddl;
+    } catch (err) {
+      showToast("Failed to load enterprise data.");
+    }
+  }
+
+  async function loadGovernanceConsole() {
+    try {
+      const resp = await fetch("/api/incidents");
+      const data = await resp.json();
+      const incidents = data.incidents || [];
+      const pending = incidents.filter(i => i.status === "PENDING_APPROVAL");
+      const closed = incidents.filter(i => i.status !== "PENDING_APPROVAL");
+
+      document.getElementById("govTotal").textContent = incidents.length;
+      document.getElementById("govPending").textContent = pending.length;
+      document.getElementById("govClosed").textContent = closed.length;
+      document.getElementById("sidebarPendingCount").textContent = pending.length;
+
+      const pendingHtml = pending.length
+        ? pending.map(inc => `
+            <div class="trace-card">
+              <div class="trace-top">
+                <span class="agent-pill">${escapeHtml(inc.incident_id)} — ${escapeHtml(inc.severity)}</span>
+                <span class="step-label">${escapeHtml(inc.created_at)}</span>
+              </div>
+              <div class="trace-action">Contract: ${escapeHtml(inc.contract_id)} (${escapeHtml(inc.region)})</div>
+              <p style="color:var(--text-secondary); margin:6px 0;"><strong>Description:</strong> ${escapeHtml(inc.description)}</p>
+              <p style="color:var(--text-secondary); margin:0 0 12px 0;"><strong>Proposed Action:</strong> ${escapeHtml(inc.recommended_action)}</p>
+              <div style="display:flex; gap:10px; flex-wrap:wrap;">
+                <button class="btn-primary" onclick="decideIncident('${escapeHtml(inc.incident_id)}', 'approve')">✓ Approve ${escapeHtml(inc.incident_id)}</button>
+                <button class="btn-secondary" onclick="decideIncident('${escapeHtml(inc.incident_id)}', 'reject')">✕ Reject ${escapeHtml(inc.incident_id)}</button>
+              </div>
+            </div>
+          `).join("")
+        : `<div class="notice-box" style="margin-top:0;">No pending incidents awaiting approval. Run an investigation in <strong>Run Analysis</strong> to stage new compliance audits.</div>`;
+
+      document.getElementById("govPendingList").innerHTML = pendingHtml;
+
+      if (incidents.length) {
+        const cols = ["incident_id", "contract_id", "region", "severity", "status", "created_at"];
+        const rows = incidents.map(i => cols.map(c => i[c]));
+        document.getElementById("govLedgerTable").innerHTML = buildHtmlTable(cols, rows);
+      } else {
+        document.getElementById("govLedgerTable").innerHTML = `<p style="padding:14px; margin:0; color:var(--text-muted);">No audit incidents recorded yet.</p>`;
+      }
+    } catch (err) {
+      showToast("Failed to load governance incidents.");
+    }
+  }
+
+  async function decideIncident(incidentId, action, feedbackTargetId = null) {
+    try {
+      const resp = await fetch(`/api/incidents/${encodeURIComponent(incidentId)}/${action}`, {
+        method: "POST"
+      });
+      const data = await resp.json();
+      showToast(data.message || "Incident updated.");
+      if (feedbackTargetId && document.getElementById(feedbackTargetId)) {
+        document.getElementById(feedbackTargetId).innerHTML = `<div class="notice-box">${escapeHtml(data.message)}</div>`;
+      }
+      refreshStatusAndData();
+      if (document.getElementById("page-governance").classList.contains("active")) {
+        loadGovernanceConsole();
+      }
+    } catch (err) {
+      showToast("Failed to update incident.");
+    }
+  }
+
+  async function resetIncidents() {
+    await fetch("/api/incidents/reset", { method: "POST" });
+    showToast("Audit incident ledger cleared.");
+    refreshStatusAndData();
+    loadGovernanceConsole();
+  }
+
+  // =========================================================================
+  // TABLE & MARKDOWN FORMATTERS
+  // =========================================================================
+  function buildHtmlTable(columns, rows) {
+    if (!columns || columns.length === 0) {
+      return `<p style="padding:14px; margin:0; color:var(--text-muted);">No rows returned.</p>`;
+    }
+    const ths = columns.map(c => `<th>${escapeHtml(c)}</th>`).join("");
+    const trs = rows.map(row => `<tr>${row.map(cell => `<td>${escapeHtml(cell === null ? "NULL" : cell)}</td>`).join("")}</tr>`).join("");
+    return `<table class="data-table"><thead><tr>${ths}</tr></thead><tbody>${trs}</tbody></table>`;
+  }
+
+  function simpleMarkdownToHtml(md) {
+    const lines = md.split("\n");
+    let html = "";
+    let inList = false;
+
+    for (const rawLine of lines) {
+      const line = rawLine.trim();
+      if (!line) {
+        if (inList) { html += "</ul>"; inList = false; }
+        continue;
+      }
+      const formatted = escapeHtml(line)
+        .replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>")
+        .replace(/\*(.+?)\*/g, "<em>$1</em>")
+        .replace(/`(.+?)`/g, "<code>$1</code>");
+
+      if (line.startsWith("# ")) {
+        if (inList) { html += "</ul>"; inList = false; }
+        html += `<h1>${formatted.slice(2)}</h1>`;
+      } else if (line.startsWith("### ")) {
+        if (inList) { html += "</ul>"; inList = false; }
+        html += `<h3>${formatted.slice(4)}</h3>`;
+      } else if (line.startsWith("- ")) {
+        if (!inList) { html += "<ul>"; inList = true; }
+        html += `<li>${formatted.slice(2)}</li>`;
+      } else {
+        if (inList) { html += "</ul>"; inList = false; }
+        html += `<p>${formatted}</p>`;
+      }
+    }
+    if (inList) html += "</ul>";
+    return html;
+  }
+</script>
+</body>
+</html>
